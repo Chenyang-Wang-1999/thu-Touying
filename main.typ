@@ -1,6 +1,6 @@
 #import "@preview/touying:0.7.4": *
-// #import "theme.typ": *
-#import "@local/thu-Touying:0.1.0": *
+#import "theme.typ": *
+// #import "@local/thu-Touying:0.1.0": *
 
 #show: group-meeting-theme.with(
   // 改为 "university" 可将封面和目录换成清华大学标识。

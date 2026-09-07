@@ -138,7 +138,7 @@
       ])
       at(83.04pt, 322pt, block(width: 793.93pt)[
         #set align(center)
-        #set text(size: 22pt, fill: tsinghua-purple)
+        #set text(size: 22pt, fill: black)
         #set par(leading: 0.8em)
         #if info.author != none and info.author != [] { [#info.author]; parbreak() }
         #if info.institution != none and info.institution != [] { info.institution; parbreak() }
