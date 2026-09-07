@@ -1,0 +1,4 @@
+[package]
+name = "thu-Touying"
+version = "0.1.0"
+entrypoint = "theme.typ"
