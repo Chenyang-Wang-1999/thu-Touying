@@ -1,7 +1,7 @@
 # 组会 Touying 模板
-**后续转入 [typst-packages](https://github.com/Chenyang-Wang-1999/typst-packages) 开发**
+**后续转入 [typst-packages](https://github.com/Chenyang-Wang-1999/typst-packages) 开发，此仓库不再更新**
 
-根据上一级目录的 `组会PPT模版.pptx` 重建。原稿为 16:9、960 × 540 pt，采用清华紫 `#5B2F7C`、灰色封面标题框、目录竖线及正文页上下横条。
+根据 `组会PPT模版.pptx` 重建。原稿为 16:9、960 × 540 pt，采用清华紫 `#5B2F7C`、灰色封面标题框、目录竖线及正文页上下横条。
 
 ## 文件
 
