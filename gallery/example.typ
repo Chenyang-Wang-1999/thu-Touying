@@ -1,12 +1,13 @@
 #import "@preview/touying:0.7.4": *
-#import "theme.typ": *
-// #import "@local/thu-Touying:0.1.0": *
+#import "@preview/shuimu-touying-zen:0.1.0": *
 
 #show: group-meeting-theme.with(
-  // 改为 "university" 可将封面和目录换成清华大学标识。
-  brand: "physics",
   // 主色控制横条、目录竖线、标题和强调文字；反白 SVG 背景透明。
-  // primary: rgb("194f6b"),
+  // primary: blue,
+  font: ("Arial", "Noto Sans SC"),
+  cover-logo-name: "phys-logo.svg",
+  // header-logo-name: "energy-power-logo.svg",
+  // cover-logo: image("assets/campus.png"),
   config-info(
     title: [组会汇报],
     subtitle: [组会报告],
@@ -43,6 +44,7 @@
   - 系统在平衡位置附近运动。
   - 暂时忽略阻尼和外界驱动。
   - 用位移 $x(t)$ 描述系统状态。
+  - *加粗文字* 用清华紫显示
 ][
   === 简谐振子
 

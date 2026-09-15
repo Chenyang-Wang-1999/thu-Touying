@@ -2,15 +2,13 @@
 // 页面尺寸与原 PPT 一致：960 × 540 pt（16:9）。
 #import "@preview/touying:0.7.4": *
 
-#let tsinghua-purple = rgb("5b2f7c")
+#let tsinghua-purple = rgb("660874")
+#let tsinghua-magenta = rgb("d93379")
 #let red = rgb("d62728")
 #let blue = rgb("005795")
 #let green = rgb("1a5f1a")
 #let orange = rgb("c45c00")
-#let physics-logo = image("assets/physics-logo.png")
-#let university-logo = image("assets/university-logo.jpeg")
-#let university-logo-white = image("assets/university-logo-white.svg")
-#let campus = image("assets/campus.png")
+#let university-logo = "university-logo.svg"
 
 // 所有绝对定位以原 PPT 的 point 坐标为基准，正文仍采用正常文档流。
 #let at(x, y, body) = place(top + left, dx: x, dy: y, body)
@@ -31,7 +29,7 @@
       scale-to-fit(self.store.cover-logo, 310.24pt, 74.8pt)))
   }
   if self.store.campus != none {
-    at(583.5pt, 476.25pt, scale-to-fit(self.store.campus, 331.5pt, 39pt))
+    at(623.5pt, 485.25pt, scale-to-fit(self.store.campus, 331.5pt, 39pt))
   }
 }
 
@@ -57,7 +55,8 @@
 }
 
 // 日期与副标题共用一行；同一段落内的页码与日期共享基线。
-#let report-footer(self, fill: tsinghua-purple, page-number: false, cover: false) = {
+#let report-footer(self, fill: none, page-number: false, cover: false) = {
+  if fill == none { fill = self.colors.primary }
   let info = self.info
   let has-date = info.date != none and info.date != []
   let has-subtitle = info.subtitle != none and info.subtitle != []
@@ -100,8 +99,8 @@
       )))
   ])
   if self.store.header-logo != none {
-    at(809.74pt, 6.25pt, fitted(133.57pt, 52.39pt,
-      scale-to-fit(self.store.header-logo, 133.57pt, 52.39pt)))
+    let scaled-logo = scale-to-fit(self.store.header-logo, 10000pt, 40pt)
+    place(horizon + right, dx: -20pt, dy: -270pt + 32pt, scaled-logo)
   }
   report-footer(self, fill: white, page-number: self.store.show-page-number)
 }
@@ -129,7 +128,7 @@
     {
       at(83.04pt, 159.69pt, block(width: 793.93pt, height: 97pt)[
         #align(center + horizon)[
-          #set text(fill: tsinghua-purple, size: 36pt)
+          #set text(fill: self.colors.primary, size: 36pt)
           #title
           #if inline-subtitle and subtitle != none and subtitle != [] {
             h(0.25em); subtitle
@@ -175,7 +174,7 @@
           let gap = if v-spacing == auto { self.store.outline-v-spacing } else { v-spacing }
           let rows = entries.enumerate().map(((i, entry)) => {
             let color = if active == none { black }
-              else if i + 1 == active { tsinghua-purple } else { rgb("999999") }
+              else if i + 1 == active { self.colors.primary } else { rgb("999999") }
             text(fill: color, grid(columns: (10.5pt, 1fr), column-gutter: 12pt,
               align: left + horizon,
               box(width: 10.5pt, height: 10.5pt, fill: color), entry))
@@ -219,17 +218,57 @@
     })
 })
 
+#let read-svg-and-replace-fill(name, fill, all: false) = {
+  let svg = read("assets/" + name)
+  let re = regex("fill:#[0-9a-fA-F]{6}")
+  let re2 = regex("fill=\"#[0-9a-fA-F]{6}\"")
+  if all{
+    image(bytes(
+      svg.replace(
+        re, "fill:" + fill.to-hex()
+      ).replace(
+        re2, 
+        "fill=\"" + fill.to-hex() + "\"",
+      )
+      ), format: "svg")
+  }
+  else{
+    image(bytes(svg.replace(
+      "fill:" + tsinghua-purple.to-hex(), "fill:" + fill.to-hex()).replace(
+        "fill=\"" + tsinghua-purple.to-hex() + "\"",
+        "fill=\"" + fill.to-hex() + "\"",
+      )
+      ), 
+      format: "svg")
+  }
+}
+
+
 #let group-meeting-theme(
   font: ("Arial", "SimHei"), body-size: 22pt, title-size: 28pt,
   math-font: "New Computer Modern Math", subtitle-font: ("Arial", "STXinwei"),
-  primary: tsinghua-purple, brand: "physics", cover-logo: auto,
-  header-logo: university-logo-white, campus: campus,
+  primary: tsinghua-purple, cover-logo-name: university-logo,
+  header-logo-name: university-logo, cover-logo: none, header-logo: none, campus: none,
   part-prefix: "Part", footer: auto, show-page-number: true,
   section-slides: true, outline-v-spacing: auto, show-contents: true, ..args, body,
 ) = {
-  assert(brand in ("physics", "university"), message: "brand 应为 physics 或 university")
-  let logo = if cover-logo != auto { cover-logo }
-    else if brand == "physics" { physics-logo } else { university-logo }
+  if cover-logo == none{
+    cover-logo = read-svg-and-replace-fill(cover-logo-name, primary)
+  }
+  else if type(cover-logo) == str{
+    cover-logo = image(cover-logo)
+  }
+  if header-logo == none{
+    header-logo = read-svg-and-replace-fill(header-logo-name, white, all: true)
+  }
+  else if type(header-logo) == str{
+    header-logo = image(header-logo)
+  }
+
+  if campus == none{
+    campus = read-svg-and-replace-fill("campus.svg", primary)
+  }
+  
   show: touying-slides.with(
     config-page(width: 960pt, height: 540pt, fill: white,
       margin: (left: 72pt, right: 72pt, top: 91pt, bottom: 55pt),
@@ -241,7 +280,7 @@
     config-colors(primary: primary),
     config-info(title: [中文标题], subtitle: [English title],
       author: none, institution: none, date: none),
-    config-store(cover-logo: logo, header-logo: header-logo, campus: campus,
+    config-store(cover-logo: cover-logo, header-logo: header-logo, campus: campus,
       title-size: title-size, part-prefix: part-prefix, font: font,
       subtitle-font: subtitle-font, outline-v-spacing: outline-v-spacing,
       show-contents: show-contents,
