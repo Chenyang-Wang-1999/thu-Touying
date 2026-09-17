@@ -2,8 +2,11 @@
 // 页面尺寸与原 PPT 一致：960 × 540 pt（16:9）。
 #import "@preview/touying:0.7.4": *
 
-#let tsinghua-purple = rgb("660874")
-#let tsinghua-magenta = rgb("d93379")
+#let tsinghua-purple = rgb("660874") // PANTONE 259 c
+#let tsinghua-magenta = rgb("d93379") // PANTONE 7424 c
+#let tsinghua-gold = rgb("87754D")  // PANTONE 871 c
+#let tsinghua-silver = rgb("8D9194") // PANTONE 877 c
+
 #let red = rgb("d62728")
 #let blue = rgb("005795")
 #let green = rgb("1a5f1a")
